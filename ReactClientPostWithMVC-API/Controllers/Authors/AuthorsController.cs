@@ -116,19 +116,21 @@ namespace ReactClientPostWithMVC_API.Controllers.Authors
                     return BadRequest("Invalid input");
                 }
 
+                Console.WriteLine("PhotoPath : " + author.PhotoPath);
+
                 if (!string.IsNullOrWhiteSpace(author.PhotoPath))
                 {
                     var authorPhoto = Convert.FromBase64String(author.PhotoPath);
                     author.PhotoPath = await _fileStorageService.SaveFile(authorPhoto, "jpg", "author");
                 }
+                
 
                 var createdAuthor = await _authorRepository.AddEntity(author);
 
                 return CreatedAtAction(nameof(GetAuthor), new { id = createdAuthor.AuthorID }, createdAuthor);
             }
             catch (Exception)
-            {
-
+            {                
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error creating data.");
             }
             
@@ -146,6 +148,8 @@ namespace ReactClientPostWithMVC_API.Controllers.Authors
                 {
                     return NotFound($"Author with Id = {id} not found.");
                 }
+
+                await _fileStorageService.DeleteFile(author.PhotoPath, "author");
 
                 return await _authorRepository.DeleteEntity(id);
             }
