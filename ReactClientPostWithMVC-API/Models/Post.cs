@@ -17,21 +17,5 @@ namespace ReactClientPostWithMVC_API.Models
         public Author Author { get; set; }
         public DateTime DatePosted { get; set; } = DateTime.Now;
 
-        [NotMapped]
-        public string NameSlug { 
-            get
-            {
-                return $"{Author.FirstName.ToLower()}-{Author.LastName.ToLower()}";
-            }
-        }
-
-        [NotMapped]
-        public string TruncatedContent
-        {
-            get
-            {
-                return $"{Content.Truncate(80)}{"...."}";
-            }
-        }
     }
 }
