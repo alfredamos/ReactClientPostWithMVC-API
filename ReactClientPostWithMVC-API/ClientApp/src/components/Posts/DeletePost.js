@@ -20,9 +20,8 @@ export const DeletePost = (props) => {
     }, [apiUrl]);
 
 
-    const deleteHandler = async (id) => {
-        console.log("Post ID ",id);
-        console.log("Click me Delete");
+    const deleteHandler = (event) => {
+        event.preventDefault();        
         if (window.confirm('Are you sure to delete this record?')) {
             axios.delete(apiUrl)
                 .then(res => {
