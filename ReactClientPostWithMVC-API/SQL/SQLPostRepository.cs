@@ -59,7 +59,7 @@ namespace ReactClientPostWithMVC_API.SQL
             return await query.Where(a => a.Title.Contains(searchKey) ||
                               a.Content.Contains(searchKey) ||                              
                               a.Author.FirstName.Contains(searchKey) ||
-                              a.Author.FullName.Contains(searchKey) ||
+                              //a.Author.FullName.Contains(searchKey) ||
                               a.Author.LastName.Contains(searchKey) ||
                               a.Author.Email.Contains(searchKey) || 
                               a.Author.PhoneNumber.Contains(searchKey)).ToListAsync();

@@ -70,7 +70,7 @@ namespace ReactClientPostWithMVC_API.Controllers.Posts
         {
             try
             {
-                if (id != post.AuthorID)
+                if (id != post.PostID)
                 {
                     return BadRequest("Id mismatch.");
                 }

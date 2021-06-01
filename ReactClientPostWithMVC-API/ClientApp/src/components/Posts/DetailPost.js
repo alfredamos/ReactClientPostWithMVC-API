@@ -23,7 +23,7 @@ export const DetailPost = (props) => {
     const deleteHandler = async (id) => {
         console.log(id);
         console.log("Click me Delete");
-        props.history.push({
+        props.history.replace({
             pathname: `/deletePost/${id}`
         });      
     }
@@ -32,7 +32,7 @@ export const DetailPost = (props) => {
     const editHandler = async (id) => {
         console.log(id);
         console.log("Click me Edit");
-        props.history.push({
+        props.history.replace({
             pathname: `/editPost/${id}`
         });      
     }

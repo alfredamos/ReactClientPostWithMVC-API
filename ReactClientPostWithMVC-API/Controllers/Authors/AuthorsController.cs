@@ -165,6 +165,7 @@ namespace ReactClientPostWithMVC_API.Controllers.Authors
         [HttpGet("search/{searchKey}")]
         public async Task<ActionResult<IEnumerable<Author>>> Search(string searchKey)
         {
+            Console.WriteLine("In author-controller, searchKey :" + searchKey);
             try
             {
                 return Ok(await _authorRepository.Search(searchKey));

@@ -1,11 +1,12 @@
 ﻿import React, { useState } from 'react';
 
-export const InputImage = ({ base64, UploadImage }) => {
+export const InputImage = (props) => {
     const [baseImage, setBaseImage] = useState('');
+    const {imageHandler } = props;
 
     UploadImage = async (event) => {
         const file = event.target.files[0];
-        base64 = await ConvertBase64(file);
+        imageSource = await ConvertBase64(file);
         setBaseImage(base64);
     }
 
@@ -25,9 +26,12 @@ export const InputImage = ({ base64, UploadImage }) => {
     }
 
     return (
-        <input
-            type="file"
-            value={file}          
-        />
+        <div>
+            <input
+                type="file"
+                value={file}
+                onChange={imageHandler}
+            />
+        </div>
     );
 }

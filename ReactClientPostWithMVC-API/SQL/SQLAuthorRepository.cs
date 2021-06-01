@@ -49,6 +49,7 @@ namespace ReactClientPostWithMVC_API.SQL
 
         public async Task<IEnumerable<Author>> Search(string searchKey)
         {
+            Console.WriteLine("In SQL-Search, searchKey : " + searchKey);
             IQueryable<Author> query = _context.Authors;
             if (string.IsNullOrWhiteSpace(searchKey))
             {
@@ -57,7 +58,7 @@ namespace ReactClientPostWithMVC_API.SQL
 
             return await query.Where(a => a.Email.Contains(searchKey) ||
                               a.FirstName.Contains(searchKey) ||
-                              a.FullName.Contains(searchKey) ||
+                              //a.FullName.Contains(searchKey) ||
                               a.LastName.Contains(searchKey) ||
                               a.PhoneNumber.Contains(searchKey)).ToListAsync();
         }

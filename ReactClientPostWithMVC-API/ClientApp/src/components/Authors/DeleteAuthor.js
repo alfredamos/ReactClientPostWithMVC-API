@@ -1,10 +1,13 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { ConfirmDelete } from '../Utilities/ConfirmDelete';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
 export const DeleteAuthor = (props) => {
     const [author, setAuthor] = useState({ authorID: '', firstName: '', lastName: '', email: '', phoneNumber: '', dateOfBirth: '' });
+    const [readyForRender, setReadyForRender] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     
     const apiUrl = `https://localhost:5001/api/authors/${props.match.params.id}`;
 
@@ -13,45 +16,72 @@ export const DeleteAuthor = (props) => {
         const GetData = async () => {
             const result = await axios(apiUrl);
             setAuthor(result.data);
+            setReadyForRender(true);
+            setIsDelete(false);
         };
         GetData();
-    }, [apiUrl]);
+    }, [apiUrl, readyForRender]);
 
 
-    const deleteHandler = (event) => {
-        event.preventDefault();        
-        if (window.confirm('Are you sure to delete this record?')) {
-            axios.delete(apiUrl)
-                .then(res => {
-                    props.history.push({
-                        pathname: "/authorList"
-                    });
-
-                })
-        }
+    const deleteClick = (event) => {
+        event.preventDefault();
+        setIsDelete(true);
     }
 
 
-    return (
+    const deleteHandler = (deleteConfirmed) => {        
+        if (deleteConfirmed) {
+            axios.delete(apiUrl)
+        }
+        props.history.replace({
+            pathname: '/authorList'
+        });
 
-        <div className="content-section" style={{width: '50%'}}>
-            <form onSubmit={() => deleteHandler(author.authorID)}>
-                <fieldset className="form-group">
-                    <legend className="border-bottom m-2">Delete Author</legend>
-                    <h2>Are you sure you want to delete the Author "{author.fullName}"?</h2>
-                </fieldset>
-                <div className="form-group">
-                    <button className="btn btn-outline-danger" type="submit"><strong>Yes, Delete</strong></button>
-                    <Link
-                        className="btn btn-outline-secondary m-2"
-                        to="/authorList"
-                    >
-                        <strong>Cancel</strong>
-                    </Link>
+    }
+    
+
+    return (
+        <>
+            <br />
+            <br />
+            {
+                readyForRender &&
+                <div className="content-section mt-5" style={{ width: '50%' }}>
+                    <form onSubmit={deleteClick}>
+                        <div className="border">
+                            <div className="card-body">
+                                <fieldset className="form-group">
+
+                                    <legend className="border-bottom m-2">Delete Author</legend>
+                                    <h2>Are you sure you want to delete : "{author.fullName}"?</h2>
+
+
+                                </fieldset>
+                            </div>
+                            <div className="form-group card-footer">
+                                <button className="btn btn-outline-danger m-2" type="submit"><strong>Yes, Delete</strong></button>
+                                <Link
+                                    className="btn btn-outline-secondary"
+                                    to="/authorList"
+                                >
+                                    <strong>Cancel</strong>
+                                </Link>
+                            </div>
+                        </div>
+                        
+                        {
+                            isDelete && < ConfirmDelete
+                                ConfirmationMessage={`Are you sure you want to delete ${author.fullName}?`}
+                                ConfirmationTitle={"Delete Confirmation"}
+                                deleteHandler={deleteHandler}
+                            />
+                        }
+                    </form>
                 </div>
-            </form>
-        </div>
+            }
+        </>
     );
+
 
 }
 
